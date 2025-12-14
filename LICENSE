@@ -1,121 +1,205 @@
-Creative Commons Legal Code
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Естонський Садок в Овручі</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Montserrat', sans-serif; margin:0; padding:0; background:#f9f9f9; color:#333;}
+header { background:#38761d; color:white; padding:20px; text-align:center;}
+header input, header button { padding:8px; margin:5px;}
+nav { background:#2b5c17; display:flex; justify-content:center; flex-wrap:wrap;}
+nav button { background:none; border:none; color:white; padding:15px 20px; cursor:pointer; transition:0.3s;}
+nav button:hover, nav button.active { background:#f7b231; color:#333;}
+.container { max-width:1200px; margin:20px auto; padding:0 20px;}
+.tab-content { display:none;}
+.tab-content.active { display:block;}
+.section-title { color:#38761d; border-bottom:3px solid #f7b231; padding-bottom:5px; margin-bottom:15px;}
+.gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-top:10px;}
+.gallery img { width:100%; border-radius:5px; box-shadow:0 2px 5px rgba(0,0,0,0.2);}
+.upload-area { margin-top:15px; display:none;}
+.upload-area input { display:block; margin-bottom:10px;}
+textarea, input[type="text"], input[type="file"] { width:100%; padding:8px; border-radius:5px; border:1px solid #ccc; margin-bottom:10px;}
+button.upload-btn { background:#38761d; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer;}
+button.upload-btn:hover { background:#1e4d0c;}
+textarea { resize: vertical; }
+.admin-only { display:none; }
+.admin .admin-only { display:block; }
+</style>
+</head>
+<body>
 
-CC0 1.0 Universal
+<header>
+<h1>Естонський Садок в Овручі</h1>
+<p>Вхід для персоналу — пароль або email</p>
+<input type="text" id="userInput" placeholder="Пароль або Email">
+<button onclick="checkAccess()">Увійти</button>
+<button onclick="guestAccess()">Увійти як гість</button>
+</header>
 
-    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE
-    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN
-    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS
-    INFORMATION ON AN "AS-IS" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES
-    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS
-    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM
-    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED
-    HEREUNDER.
+<div class="container" id="mainContent" style="display:none;">
+<nav>
+<button class="tab-btn active" data-tab="teachers">Вихователі</button>
+<button class="tab-btn" data-tab="groups">Групи</button>
+<button class="tab-btn" data-tab="orders">Накази</button>
+<button class="tab-btn" data-tab="attestation">Атестація</button>
+<button class="tab-btn" data-tab="vacant">Вакантні посади</button>
+<button class="tab-btn" data-tab="statut">Статут</button>
+</nav>
 
-Statement of Purpose
+<!-- Вихователі -->
+<div id="teachers" class="tab-content active">
+<h2 class="section-title">Вихователі</h2>
+<div class="upload-area admin-only" id="teachersUploadArea">
+<input type="file" id="teacherUpload" accept="image/*" multiple>
+<button class="upload-btn" onclick="uploadImages('teacher')">Додати фото вихователів</button>
+<textarea id="teacherText" placeholder="Додати опис вихователів"></textarea>
+<button class="upload-btn" onclick="addText('teacher')">Додати текст</button>
+</div>
+<div class="gallery" id="teacherGallery"></div>
+<div id="teacherTextDisplay"></div>
+</div>
 
-The laws of most jurisdictions throughout the world automatically confer
-exclusive Copyright and Related Rights (defined below) upon the creator
-and subsequent owner(s) (each and all, an "owner") of an original work of
-authorship and/or a database (each, a "Work").
+<!-- Групи -->
+<div id="groups" class="tab-content">
+<h2 class="section-title">Групи</h2>
+<div class="upload-area admin-only" id="groupsUploadArea">
+<input type="file" id="groupsUpload" accept="image/*" multiple>
+<button class="upload-btn" onclick="uploadImages('groups')">Додати фото групи</button>
+<textarea id="groupsText" placeholder="Додати опис групи"></textarea>
+<button class="upload-btn" onclick="addText('groups')">Додати текст</button>
+</div>
+<div class="gallery" id="groupsGallery"></div>
+<div id="groupsTextDisplay"></div>
+</div>
 
-Certain owners wish to permanently relinquish those rights to a Work for
-the purpose of contributing to a commons of creative, cultural and
-scientific works ("Commons") that the public can reliably and without fear
-of later claims of infringement build upon, modify, incorporate in other
-works, reuse and redistribute as freely as possible in any form whatsoever
-and for any purposes, including without limitation commercial purposes.
-These owners may contribute to the Commons to promote the ideal of a free
-culture and the further production of creative, cultural and scientific
-works, or to gain reputation or greater distribution for their Work in
-part through the use and efforts of others.
+<!-- Накази -->
+<div id="orders" class="tab-content">
+<h2 class="section-title">Накази</h2>
+<div class="upload-area admin-only" id="ordersUploadArea">
+<input type="file" id="ordersUpload" accept="image/*" multiple>
+<button class="upload-btn" onclick="uploadImages('orders')">Додати фото наказів</button>
+<textarea id="ordersText" placeholder="Додати опис наказів"></textarea>
+<button class="upload-btn" onclick="addText('orders')">Додати текст</button>
+</div>
+<div class="gallery" id="ordersGallery"></div>
+<div id="ordersTextDisplay"></div>
+</div>
 
-For these and/or other purposes and motivations, and without any
-expectation of additional consideration or compensation, the person
-associating CC0 with a Work (the "Affirmer"), to the extent that he or she
-is an owner of Copyright and Related Rights in the Work, voluntarily
-elects to apply CC0 to the Work and publicly distribute the Work under its
-terms, with knowledge of his or her Copyright and Related Rights in the
-Work and the meaning and intended legal effect of CC0 on those rights.
+<!-- Атестація -->
+<div id="attestation" class="tab-content">
+<h2 class="section-title">Атестація</h2>
+<div class="upload-area admin-only" id="attestationUploadArea">
+<input type="file" id="attestationUpload" accept="image/*" multiple>
+<button class="upload-btn" onclick="uploadImages('attestation')">Додати фото атестації</button>
+<textarea id="attestationText" placeholder="Додати текст"></textarea>
+<button class="upload-btn" onclick="addText('attestation')">Додати текст</button>
+</div>
+<div class="gallery" id="attestationGallery"></div>
+<div id="attestationTextDisplay"></div>
+</div>
 
-1. Copyright and Related Rights. A Work made available under CC0 may be
-protected by copyright and related or neighboring rights ("Copyright and
-Related Rights"). Copyright and Related Rights include, but are not
-limited to, the following:
+<!-- Вакантні посади -->
+<div id="vacant" class="tab-content">
+<h2 class="section-title">Вакантні посади</h2>
+<div class="upload-area admin-only" id="vacantUploadArea">
+<textarea id="vacantText" placeholder="Додати вакантні посади"></textarea>
+<button class="upload-btn" onclick="addText('vacant')">Додати текст</button>
+</div>
+<div id="vacantTextDisplay"></div>
+</div>
 
-  i. the right to reproduce, adapt, distribute, perform, display,
-     communicate, and translate a Work;
- ii. moral rights retained by the original author(s) and/or performer(s);
-iii. publicity and privacy rights pertaining to a person's image or
-     likeness depicted in a Work;
- iv. rights protecting against unfair competition in regards to a Work,
-     subject to the limitations in paragraph 4(a), below;
-  v. rights protecting the extraction, dissemination, use and reuse of data
-     in a Work;
- vi. database rights (such as those arising under Directive 96/9/EC of the
-     European Parliament and of the Council of 11 March 1996 on the legal
-     protection of databases, and under any national implementation
-     thereof, including any amended or successor version of such
-     directive); and
-vii. other similar, equivalent or corresponding rights throughout the
-     world based on applicable law or treaty, and any national
-     implementations thereof.
+<!-- Статут -->
+<div id="statut" class="tab-content">
+<h2 class="section-title">Статут</h2>
+<div class="upload-area admin-only" id="statutUploadArea">
+<textarea id="statutText" placeholder="Додати текст статуту"></textarea>
+<button class="upload-btn" onclick="addText('statut')">Додати текст</button>
+</div>
+<div id="statutTextDisplay"></div>
+</div>
 
-2. Waiver. To the greatest extent permitted by, but not in contravention
-of, applicable law, Affirmer hereby overtly, fully, permanently,
-irrevocably and unconditionally waives, abandons, and surrenders all of
-Affirmer's Copyright and Related Rights and associated claims and causes
-of action, whether now known or unknown (including existing as well as
-future claims and causes of action), in the Work (i) in all territories
-worldwide, (ii) for the maximum duration provided by applicable law or
-treaty (including future time extensions), (iii) in any current or future
-medium and for any number of copies, and (iv) for any purpose whatsoever,
-including without limitation commercial, advertising or promotional
-purposes (the "Waiver"). Affirmer makes the Waiver for the benefit of each
-member of the public at large and to the detriment of Affirmer's heirs and
-successors, fully intending that such Waiver shall not be subject to
-revocation, rescission, cancellation, termination, or any other legal or
-equitable action to disrupt the quiet enjoyment of the Work by the public
-as contemplated by Affirmer's express Statement of Purpose.
+</div>
 
-3. Public License Fallback. Should any part of the Waiver for any reason
-be judged legally invalid or ineffective under applicable law, then the
-Waiver shall be preserved to the maximum extent permitted taking into
-account Affirmer's express Statement of Purpose. In addition, to the
-extent the Waiver is so judged Affirmer hereby grants to each affected
-person a royalty-free, non transferable, non sublicensable, non exclusive,
-irrevocable and unconditional license to exercise Affirmer's Copyright and
-Related Rights in the Work (i) in all territories worldwide, (ii) for the
-maximum duration provided by applicable law or treaty (including future
-time extensions), (iii) in any current or future medium and for any number
-of copies, and (iv) for any purpose whatsoever, including without
-limitation commercial, advertising or promotional purposes (the
-"License"). The License shall be deemed effective as of the date CC0 was
-applied by Affirmer to the Work. Should any part of the License for any
-reason be judged legally invalid or ineffective under applicable law, such
-partial invalidity or ineffectiveness shall not invalidate the remainder
-of the License, and in such case Affirmer hereby affirms that he or she
-will not (i) exercise any of his or her remaining Copyright and Related
-Rights in the Work or (ii) assert any associated claims and causes of
-action with respect to the Work, in either case contrary to Affirmer's
-express Statement of Purpose.
+<script>
+// =========================
+// Доступ
+function checkAccess(){
+    const input = document.getElementById('userInput').value.toLowerCase();
+    const mainContent = document.getElementById('mainContent');
 
-4. Limitations and Disclaimers.
+    if(input === '1890' || input === 'lisovectana370@gmail.com'){
+        mainContent.style.display = 'block';
 
- a. No trademark or patent rights held by Affirmer are waived, abandoned,
-    surrendered, licensed or otherwise affected by this document.
- b. Affirmer offers the Work as-is and makes no representations or
-    warranties of any kind concerning the Work, express, implied,
-    statutory or otherwise, including without limitation warranties of
-    title, merchantability, fitness for a particular purpose, non
-    infringement, or the absence of latent or other defects, accuracy, or
-    the present or absence of errors, whether or not discoverable, all to
-    the greatest extent permissible under applicable law.
- c. Affirmer disclaims responsibility for clearing rights of other persons
-    that may apply to the Work or any use thereof, including without
-    limitation any person's Copyright and Related Rights in the Work.
-    Further, Affirmer disclaims responsibility for obtaining any necessary
-    consents, permissions or other rights required for any use of the
-    Work.
- d. Affirmer understands and acknowledges that Creative Commons is not a
-    party to this document and has no duty or obligation with respect to
-    this CC0 or use of the Work.
+        // lisovectana370@gmail.com отримує права адміністратора
+        if(input === 'lisovectana370@gmail.com'){
+            document.body.classList.add('admin');
+        }
+
+        alert('Доступ надано!');
+    } else {
+        alert('Невірний пароль або email!');
+    }
+}
+
+// =========================
+// Вхід як гість
+function guestAccess(){
+    document.getElementById('mainContent').style.display = 'block';
+    document.body.classList.remove('admin'); // гість не має адмінських прав
+    alert('Ви увійшли як гість. Можна лише дивитися.');
+}
+
+// =========================
+// Вкладки
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.dataset.tab;
+        tabContents.forEach(tc => {
+            if(tc.id === target) tc.classList.add('active');
+            else tc.classList.remove('active');
+        });
+    });
+});
+
+// =========================
+// Завантаження фото
+function uploadImages(type){
+    if(!document.body.classList.contains('admin')) { alert('Немає доступу'); return; }
+    let input = document.getElementById(type+'Upload');
+    let gallery = document.getElementById(type+'Gallery');
+    for(let i=0;i<input.files.length;i++){
+        let file = input.files[i];
+        let reader = new FileReader();
+        reader.onload = function(e){
+            let img = document.createElement('img');
+            img.src = e.target.result;
+            gallery.appendChild(img);
+        }
+        reader.readAsDataURL(file);
+    }
+    input.value='';
+}
+
+// =========================
+// Додавання тексту
+function addText(type){
+    if(!document.body.classList.contains('admin')) { alert('Немає доступу'); return; }
+    let textarea = document.getElementById(type+'Text');
+    let display = document.getElementById(type+'TextDisplay');
+    if(textarea.value.trim() !== ''){
+        let p = document.createElement('p');
+        p.textContent = textarea.value;
+        display.appendChild(p);
+        textarea.value='';
+    }
+}
+</script>
+
+</body>
+</html>
